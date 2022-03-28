@@ -9,7 +9,11 @@
         android:id="@+id/detailsFragment"
         android:name="com.gmail.notifytask1.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.gmail.notifytask1.ListFragment"

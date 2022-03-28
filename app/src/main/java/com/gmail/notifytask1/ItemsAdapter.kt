@@ -1,20 +1,16 @@
 package com.gmail.notifytask1
 
-import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gmail.notifytask1.databinding.ItemListBinding
 
 
-class ItemsAdapter(private val items: List<Item>) :
-    RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder>() {
-
-    companion object {
-        const val PREF_KEY = "ID"
-    }
+class ItemsAdapter(private val onClick: (View, Int) -> Unit) :
+    ListAdapter<Item, ItemsAdapter.ItemsViewHolder>(ItemDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,29 +18,30 @@ class ItemsAdapter(private val items: List<Item>) :
     }
 
     override fun onBindViewHolder(holder: ItemsViewHolder, position: Int) {
-        val item = items[position]
-
-        with(holder.binding) {
-            itemName.text = item.name
-            root.setOnClickListener {
-                val preferences =
-                    it.context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
-                with(preferences.edit()) {
-                    putInt(PREF_KEY, item.id)
-                    apply()
-                }
-
-                it.findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
-            }
-        }
+        val item = getItem(position)
+        holder.bind(item, onClick)
     }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
 
     class ItemsViewHolder(
-        val binding: ItemListBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+        private val binding: ItemListBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: Item, onClick: (View, Int) -> Unit) {
+            with(binding) {
+                itemName.text = item.name
+                root.setOnClickListener { onClick(root, item.id) }
+            }
+        }
+
+    }
+}
+
+object ItemDiffCallback : DiffUtil.ItemCallback<Item>() {
+    override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+        return oldItem.id == newItem.id
+    }
 }
