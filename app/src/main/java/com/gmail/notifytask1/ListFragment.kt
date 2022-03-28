@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.databinding.FragmentListBinding
 
 private const val PREF_KEY = "ID"
 
-class ListFragment : Fragment(R.layout.fragment_list) {
+class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
-    private val adapter = ItemsAdapter { view, id -> adapterOnClick(view, id) }
+    private val adapter = ItemsAdapter { item -> adapterOnClick(item) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,16 +39,17 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     }
 
-    private fun adapterOnClick(view: View, id: Int) {
+    private fun adapterOnClick(item: Item) {
 
         val preferences =
-            view.context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+            requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+
         with(preferences.edit()) {
-            putInt(PREF_KEY, id)
+            putInt(PREF_KEY, item.id)
             apply()
 
-            val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(id)
-            view.findNavController().navigate(direction)
+            val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
+            findNavController(this@ListFragment).navigate(direction)
         }
 
     }

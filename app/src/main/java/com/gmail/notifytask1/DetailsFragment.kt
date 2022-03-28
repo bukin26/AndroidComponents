@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.gmail.notifytask1.databinding.FragmentDetailsBinding
 
-class DetailsFragment : Fragment(R.layout.fragment_details) {
+class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args: DetailsFragmentArgs by navArgs()
@@ -26,12 +26,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val item = ItemsHolder.items[args.id]
+        val item = ItemsHolder.getItemById(args.id)
 
         with(binding) {
-            itemId.text = item.id.toString()
-            itemName.text = item.name
-            itemDescription.text = item.description
+            item?.let {
+                itemId.text = it.id.toString()
+                itemName.text = it.name
+                itemDescription.text = it.description
+            }
         }
 
     }
