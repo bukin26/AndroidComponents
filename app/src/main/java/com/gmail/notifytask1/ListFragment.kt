@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.databinding.FragmentListBinding
 
-private const val PREF_KEY = "ID"
+const val PREF_KEY = "ID"
 
 class ListFragment : Fragment() {
 

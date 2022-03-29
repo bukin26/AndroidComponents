@@ -1,9 +1,6 @@
 package com.gmail.notifytask1
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -20,12 +17,18 @@ class MyService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
+        val broadcastIntent = Intent()
+        broadcastIntent.action = MY_BROADCAST
+        val pendingIntent =
+            PendingIntent.getBroadcast(this, 0, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
         val notification =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Notification.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setContentTitle("Test service title")
                     .setContentText("Test service text")
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
                     .build()
             } else {
                 Notification.Builder(this)
@@ -33,6 +36,8 @@ class MyService : Service() {
                     .setContentTitle("Test service title")
                     .setContentText("Test service text")
                     .setPriority(Notification.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
                     .build()
             }
         startForeground(ONGOING_NOTIFICATION_ID, notification)
