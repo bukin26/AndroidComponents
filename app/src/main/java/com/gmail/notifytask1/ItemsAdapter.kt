@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gmail.notifytask1.databinding.ItemListBinding
 
 
-class ItemsAdapter(private val onClick: (Item) -> Unit) :
-    ListAdapter<Item, ItemsAdapter.ItemsViewHolder>(ItemDiffCallback) {
+class ItemsAdapter(
+    private val onClick: (Item) -> Unit
+) : ListAdapter<Item, ItemsAdapter.ItemsViewHolder>(ItemDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,7 +32,6 @@ class ItemsAdapter(private val onClick: (Item) -> Unit) :
                 root.setOnClickListener { onClick(item) }
             }
         }
-
     }
 }
 

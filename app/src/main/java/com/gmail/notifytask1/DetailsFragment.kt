@@ -18,16 +18,12 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         val item = ItemsHolder.getItemById(args.id)
-
         with(binding) {
             item?.let {
                 itemId.text = it.id.toString()
@@ -35,6 +31,5 @@ class DetailsFragment : Fragment() {
                 itemDescription.text = it.description
             }
         }
-
     }
 }

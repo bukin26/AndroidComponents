@@ -23,35 +23,27 @@ class ListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
         }
         adapter.submitList(ItemsHolder.items)
-
     }
 
     private fun adapterOnClick(item: Item) {
-
         val preferences =
             requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
-
         with(preferences.edit()) {
             putInt(PREF_KEY, item.id)
             apply()
-
             val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
             findNavController(this@ListFragment).navigate(direction)
         }
-
     }
 }
 
