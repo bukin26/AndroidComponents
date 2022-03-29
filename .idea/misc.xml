@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/blablabla/.gradle/caches/transforms-3/2035fd659a420c49a9ec2fd87fe9520e/transformed/core-1.7.0/res/drawable/notification_icon_background.xml" value="0.1575" />
+        <entry key="..\:/Users/blablabla/AndroidStudioProjects/NotifyTask1/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1575" />
+        <entry key="..\:/Users/blablabla/AndroidStudioProjects/NotifyTask1/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Users/blablabla/AndroidStudioProjects/NotifyTask1/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/blablabla/AndroidStudioProjects/NotifyTask1/app/src/main/res/layout/fragment_details.xml" value="0.1" />
         <entry key="..\:/Users/blablabla/AndroidStudioProjects/NotifyTask1/app/src/main/res/layout/fragment_list.xml" value="0.25416666666666665" />
