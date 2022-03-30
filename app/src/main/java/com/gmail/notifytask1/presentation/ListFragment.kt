@@ -1,17 +1,18 @@
-package com.gmail.notifytask1
-
+package com.gmail.notifytask1.presentation
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.databinding.FragmentListBinding
-
-const val PREF_KEY = "ID"
+import com.gmail.notifytask1.utils.Constants
+import com.gmail.notifytask1.data.ItemsHolder
 
 class ListFragment : Fragment() {
 
@@ -36,16 +37,14 @@ class ListFragment : Fragment() {
     }
 
     private fun adapterOnClick(item: Item) {
-        val preferences =
-            requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
-        with(preferences.edit()) {
-            putInt(PREF_KEY, item.id)
-            apply()
-            val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
-            findNavController(this@ListFragment).navigate(direction)
-        }
+        requireContext().getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE).edit {
+                putInt(Constants.PREF_KEY, item.id)
+            }
+        val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
+        findNavController(this@ListFragment).navigate(direction)
     }
 }
+
 
 
 

@@ -1,4 +1,4 @@
-package com.gmail.notifytask1
+package com.gmail.notifytask1.data
 
 object ItemsHolder {
 
@@ -9,5 +9,4 @@ object ItemsHolder {
     fun getItemById(id: Int): Item? {
         return items.find { item -> item.id == id }
     }
-
 }

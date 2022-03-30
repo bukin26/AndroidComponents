@@ -1,10 +1,11 @@
-package com.gmail.notifytask1
+package com.gmail.notifytask1.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.databinding.ItemListBinding
 
 

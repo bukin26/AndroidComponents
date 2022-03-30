@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.gmail.notifytask1.DetailsFragment"
+        android:name="com.gmail.notifytask1.presentation.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <argument
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.gmail.notifytask1.ListFragment"
+        android:name="com.gmail.notifytask1.presentation.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action

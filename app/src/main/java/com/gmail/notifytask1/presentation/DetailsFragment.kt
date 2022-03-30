@@ -1,4 +1,4 @@
-package com.gmail.notifytask1
+package com.gmail.notifytask1.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.gmail.notifytask1.data.ItemsHolder
 import com.gmail.notifytask1.databinding.FragmentDetailsBinding
+import com.gmail.notifytask1.utils.Constants
 
 class DetailsFragment : Fragment() {
 
@@ -23,7 +25,8 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val item = ItemsHolder.getItemById(args.id)
+        val id = savedInstanceState?.getInt(Constants.PREF_KEY) ?: args.id
+        val item = ItemsHolder.getItemById(id)
         with(binding) {
             item?.let {
                 itemId.text = it.id.toString()

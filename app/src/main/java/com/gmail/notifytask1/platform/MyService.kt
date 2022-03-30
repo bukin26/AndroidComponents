@@ -1,13 +1,13 @@
-package com.gmail.notifytask1
+package com.gmail.notifytask1.platform
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import com.gmail.notifytask1.R
+import com.gmail.notifytask1.utils.Constants
 
-const val CHANNEL_ID = "textServiceChannel"
-const val ONGOING_NOTIFICATION_ID = 1
 
 class MyService : Service() {
 
@@ -18,37 +18,37 @@ class MyService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
         val broadcastIntent = Intent()
-        broadcastIntent.action = MY_BROADCAST
+        broadcastIntent.action = Constants.MY_BROADCAST
         val pendingIntent =
             PendingIntent.getBroadcast(this, 0, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
         val notification =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Notification.Builder(this, CHANNEL_ID)
+                Notification.Builder(this, Constants.CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Test service title")
-                    .setContentText("Test service text")
+                    .setContentTitle(resources.getString(R.string.service_title))
+                    .setContentText(resources.getString(R.string.service_text))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build()
             } else {
                 Notification.Builder(this)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Test service title")
-                    .setContentText("Test service text")
+                    .setContentTitle(resources.getString(R.string.service_title))
+                    .setContentText(resources.getString(R.string.service_text))
                     .setPriority(Notification.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build()
             }
-        startForeground(ONGOING_NOTIFICATION_ID, notification)
+        startForeground(Constants.ONGOING_NOTIFICATION_ID, notification)
         return START_STICKY
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Test Service Channel",
+                Constants.CHANNEL_ID,
+                resources.getString(R.string.service_name),
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             val notificationManager =
