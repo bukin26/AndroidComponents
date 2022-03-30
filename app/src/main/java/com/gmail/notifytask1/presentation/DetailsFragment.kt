@@ -25,6 +25,7 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val id = savedInstanceState?.getInt(Constants.PREF_KEY) ?: args.id
         val item = ItemsHolder.getItemById(id)
         with(binding) {

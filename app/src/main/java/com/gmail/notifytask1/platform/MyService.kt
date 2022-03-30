@@ -20,7 +20,11 @@ class MyService : Service() {
         val broadcastIntent = Intent()
         broadcastIntent.action = Constants.MY_BROADCAST
         val pendingIntent =
-            PendingIntent.getBroadcast(this, 0, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getBroadcast(
+                this,
+                0,
+                broadcastIntent, PendingIntent.FLAG_IMMUTABLE
+            )
         val notification =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Notification.Builder(this, Constants.CHANNEL_ID)
