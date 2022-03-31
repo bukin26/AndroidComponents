@@ -6,11 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.gmail.notifytask1.R
+import com.gmail.notifytask1.data.MyPreferences
+import com.gmail.notifytask1.databinding.ActivityMainBinding
 import com.gmail.notifytask1.mvp.contract.MainContract
 import com.gmail.notifytask1.mvp.presenter.MainPresenter
-import com.gmail.notifytask1.data.MyPreferences
 import com.gmail.notifytask1.platform.MyBroadcastReceiver
 import com.gmail.notifytask1.platform.MyService
 import com.gmail.notifytask1.utils.Constants
@@ -20,10 +21,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var pref: MyPreferences
     private lateinit var presenter: MainPresenter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         Intent(this, MyService::class.java).also { intent ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent)
@@ -42,12 +46,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
 
     override fun onNewIntent(intent: Intent?) {
-
         super.onNewIntent(intent)
         val id = presenter.getId()
         if (id != -1) {
             val bundle = bundleOf(Constants.PREF_KEY to id)
-            findNavController(R.id.nav_host_fragment_container).navigate(
+            binding.navHostFragmentContainer.getFragment<NavHostFragment>().navController.navigate(
                 R.id.detailsFragment,
                 bundle
             )
