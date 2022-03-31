@@ -1,8 +1,14 @@
 package com.gmail.notifytask1.mvp.base
 
-interface BaseMvpPresenter<in V : BaseMvpView> {
+abstract class BaseMvpPresenter<V : BaseMvpView> {
 
-    fun attachView(view: V)
+    protected var view: V? = null
 
-    fun detachView()
+    fun attachView(view: V) {
+        this.view = view
+    }
+
+    fun detachView() {
+        view = null
+    }
 }

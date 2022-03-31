@@ -6,12 +6,15 @@ import com.gmail.notifytask1.mvp.base.BaseMvpView
 
 interface ListContract {
 
-    interface View : BaseMvpView
+    interface View : BaseMvpView {
 
-    interface Presenter : BaseMvpPresenter<View> {
+        fun submitItems(items: MutableList<Item>)
+    }
 
-        fun getItemsList(): MutableList<Item>
+    abstract class Presenter<T> : BaseMvpPresenter<View>() {
 
-        fun setId(id: Int)
+        abstract fun getItemsList()
+
+        abstract fun setId(id: Int)
     }
 }

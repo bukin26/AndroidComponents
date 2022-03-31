@@ -6,11 +6,13 @@ import com.gmail.notifytask1.mvp.base.BaseMvpView
 
 interface DetailsContract {
 
-    interface View : BaseMvpView
+    interface View : BaseMvpView {
 
-    interface Presenter : BaseMvpPresenter<View> {
-
-        fun getItem(id: Int): Item?
+        fun setItemText(item: Item?)
     }
 
+    abstract class Presenter<T> : BaseMvpPresenter<View>() {
+
+        abstract fun getItem(id: Int)
+    }
 }

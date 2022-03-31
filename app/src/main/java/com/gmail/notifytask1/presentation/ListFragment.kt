@@ -38,18 +38,22 @@ class ListFragment : Fragment(), ListContract.View {
         pref = MyPreferences(requireContext())
         presenter = ListPresenter(pref)
         presenter.attachView(this)
-        adapter.submitList(presenter.getItemsList())
+        presenter.getItemsList()
     }
 
     private fun adapterOnClick(item: Item) {
-        pref.setId(item.id)
+        presenter.setId(item.id)
         val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
         findNavController(this@ListFragment).navigate(direction)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         presenter.detachView()
+        super.onDestroyView()
+    }
+
+    override fun submitItems(items: MutableList<Item>) {
+        adapter.submitList(items)
     }
 }
 

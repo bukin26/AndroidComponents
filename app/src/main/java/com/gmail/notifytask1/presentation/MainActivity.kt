@@ -6,10 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
 import com.gmail.notifytask1.R
 import com.gmail.notifytask1.data.MyPreferences
-import com.gmail.notifytask1.databinding.ActivityMainBinding
 import com.gmail.notifytask1.mvp.contract.MainContract
 import com.gmail.notifytask1.mvp.presenter.MainPresenter
 import com.gmail.notifytask1.platform.MyBroadcastReceiver
@@ -21,13 +20,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var pref: MyPreferences
     private lateinit var presenter: MainPresenter
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_main)
         Intent(this, MyService::class.java).also { intent ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent)
@@ -47,18 +43,21 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val id = presenter.getId()
+        presenter.getId()
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
+    }
+
+    override fun navigateToDetails(id: Int) {
         if (id != -1) {
             val bundle = bundleOf(Constants.PREF_KEY to id)
-            binding.navHostFragmentContainer.getFragment<NavHostFragment>().navController.navigate(
+            findNavController(R.id.nav_host_fragment_container).navigate(
                 R.id.detailsFragment,
                 bundle
             )
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.detachView()
     }
 }

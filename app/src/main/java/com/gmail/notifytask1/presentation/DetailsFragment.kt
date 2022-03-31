@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.databinding.FragmentDetailsBinding
 import com.gmail.notifytask1.mvp.contract.DetailsContract
 import com.gmail.notifytask1.mvp.presenter.DetailsPresenter
@@ -30,7 +31,15 @@ class DetailsFragment : Fragment(), DetailsContract.View {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
         val id = savedInstanceState?.getInt(Constants.PREF_KEY) ?: args.id
-        val item = presenter.getItem(id)
+        presenter.getItem(id)
+    }
+
+    override fun onDestroyView() {
+        presenter.detachView()
+        super.onDestroyView()
+    }
+
+    override fun setItemText(item: Item?) {
         with(binding) {
             item?.let {
                 itemId.text = it.id.toString()
@@ -38,10 +47,5 @@ class DetailsFragment : Fragment(), DetailsContract.View {
                 itemDescription.text = it.description
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.detachView()
     }
 }
