@@ -8,7 +8,7 @@ interface ListContract {
 
     interface View : BaseMvpView {
 
-        fun submitItems(items: MutableList<Item>)
+        fun submitItems(items: List<Item>)
     }
 
     abstract class Presenter<T> : BaseMvpPresenter<View>() {

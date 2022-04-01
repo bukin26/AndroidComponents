@@ -8,7 +8,7 @@ interface DetailsContract {
 
     interface View : BaseMvpView {
 
-        fun setItemText(item: Item?)
+        fun setItemText(item: Item)
     }
 
     abstract class Presenter<T> : BaseMvpPresenter<View>() {

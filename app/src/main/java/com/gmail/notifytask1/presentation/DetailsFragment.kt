@@ -39,13 +39,11 @@ class DetailsFragment : Fragment(), DetailsContract.View {
         super.onDestroyView()
     }
 
-    override fun setItemText(item: Item?) {
+    override fun setItemText(item: Item) {
         with(binding) {
-            item?.let {
-                itemId.text = it.id.toString()
-                itemName.text = it.name
-                itemDescription.text = it.description
-            }
+                itemId.text = item.id.toString()
+                itemName.text = item.name
+                itemDescription.text = item.description
         }
     }
 }

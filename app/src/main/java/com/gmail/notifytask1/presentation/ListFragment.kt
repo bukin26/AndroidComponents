@@ -52,7 +52,7 @@ class ListFragment : Fragment(), ListContract.View {
         super.onDestroyView()
     }
 
-    override fun submitItems(items: MutableList<Item>) {
+    override fun submitItems(items: List<Item>) {
         adapter.submitList(items)
     }
 }
