@@ -1,23 +1,22 @@
 package com.gmail.notifytask1.presentation
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.databinding.FragmentListBinding
-import com.gmail.notifytask1.utils.Constants
-import com.gmail.notifytask1.data.ItemsHolder
+import com.gmail.notifytask1.viewmodel.ListViewModel
 
 class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
     private val adapter = ItemsAdapter { item -> adapterOnClick(item) }
+    private val viewModel: ListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +33,11 @@ class ListFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
         }
-        adapter.submitList(ItemsHolder.items)
+        adapter.submitList(viewModel.getItemsList())
     }
 
     private fun adapterOnClick(item: Item) {
-        requireContext().getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE).edit {
-                putInt(Constants.PREF_KEY, item.id)
-            }
+        viewModel.setId(item.id)
         val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
         findNavController(this@ListFragment).navigate(direction)
     }

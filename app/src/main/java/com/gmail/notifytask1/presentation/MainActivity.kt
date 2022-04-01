@@ -1,11 +1,10 @@
 package com.gmail.notifytask1.presentation
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -13,9 +12,12 @@ import com.gmail.notifytask1.R
 import com.gmail.notifytask1.platform.MyBroadcastReceiver
 import com.gmail.notifytask1.platform.MyService
 import com.gmail.notifytask1.utils.Constants
+import com.gmail.notifytask1.viewmodel.MainViewModel
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +35,9 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(myBroadcastReceiver, intentFilter)
     }
 
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val sharedPref = this.getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE)
-        val id = sharedPref.getInt(Constants.PREF_KEY, -1)
-        Log.d("TAG", "onNewIntent: $id")
+        val id = viewModel.getId()
         if (id != -1) {
             val bundle = bundleOf(Constants.PREF_KEY to id)
             findNavController(R.id.nav_host_fragment_container).navigate(

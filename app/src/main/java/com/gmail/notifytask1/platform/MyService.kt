@@ -8,7 +8,6 @@ import android.os.IBinder
 import com.gmail.notifytask1.R
 import com.gmail.notifytask1.utils.Constants
 
-
 class MyService : Service() {
 
     override fun onBind(p0: Intent?): IBinder? {
