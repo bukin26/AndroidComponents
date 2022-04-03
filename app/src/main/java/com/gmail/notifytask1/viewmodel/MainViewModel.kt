@@ -1,15 +1,14 @@
 package com.gmail.notifytask1.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.gmail.notifytask1.data.MyPreferences
-import com.gmail.notifytask1.repository.MainRepository
+import androidx.lifecycle.ViewModel
+import com.gmail.notifytask1.repository.ItemsRepository
+import com.gmail.notifytask1.utils.SingleLiveEvent
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class MainViewModel(private val repository: ItemsRepository) : ViewModel() {
 
-    private val repository = MainRepository(MyPreferences(getApplication()))
+    val id = SingleLiveEvent<Int>()
 
-    fun getId(): Int {
-        return repository.getId()
+    fun getId() {
+        id.value = repository.getId()
     }
 }

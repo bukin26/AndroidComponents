@@ -1,21 +1,20 @@
 package com.gmail.notifytask1.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.gmail.notifytask1.data.Item
-import com.gmail.notifytask1.data.MyPreferences
-import com.gmail.notifytask1.repository.ListRepository
+import com.gmail.notifytask1.repository.ItemsRepository
 
 
-class ListViewModel(app: Application) : AndroidViewModel(app) {
+class ListViewModel(private val repository: ItemsRepository) : ViewModel() {
 
-    private val repository = ListRepository(MyPreferences(getApplication()))
+    val items = MutableLiveData<List<Item>>()
 
     fun setId(id: Int) {
         repository.setId(id)
     }
 
-    fun getItemsList(): List<Item>{
-        return repository.getItemsList()
+    fun getItemsList(){
+        items.value = repository.getItemsList()
     }
 }

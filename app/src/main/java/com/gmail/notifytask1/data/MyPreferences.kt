@@ -6,7 +6,10 @@ import com.gmail.notifytask1.utils.Constants
 
 class MyPreferences(context: Context) {
 
-    private val pref = context.getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE)
+    private val pref = context.getSharedPreferences(
+        Constants.MY_PREFERENCES,
+        Context.MODE_PRIVATE
+    )
 
     fun setId(id: Int) {
         pref.edit {
