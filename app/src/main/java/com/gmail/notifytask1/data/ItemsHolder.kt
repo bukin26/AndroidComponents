@@ -2,7 +2,7 @@ package com.gmail.notifytask1.data
 
 object ItemsHolder {
 
-    val items = MutableList(20) {
+    val items = List(20) {
         Item(it, "Name $it", "Description $it")
     }
 
