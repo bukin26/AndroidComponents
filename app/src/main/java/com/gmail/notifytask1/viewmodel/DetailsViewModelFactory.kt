@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.gmail.notifytask1.repository.ItemsRepository
 
 @Suppress("UNCHECKED_CAST")
-class MyViewModelFactory(
-    private val repository: ItemsRepository
+class DetailsViewModelFactory(
+    private val repository: ItemsRepository,
+    private val id: Int
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         when (modelClass) {
-            MainViewModel::class.java -> return MainViewModel(repository) as T
-            ListViewModel::class.java -> return ListViewModel(repository) as T
+            DetailsViewModel::class.java -> return DetailsViewModel(repository, id) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

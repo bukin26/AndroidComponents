@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.databinding.ItemListBinding
 
-
 class ItemsAdapter(
     private val onClick: (Item) -> Unit
 ) : ListAdapter<Item, ItemsAdapter.ItemsViewHolder>(ItemDiffCallback) {
@@ -37,6 +36,7 @@ class ItemsAdapter(
 }
 
 object ItemDiffCallback : DiffUtil.ItemCallback<Item>() {
+
     override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
         return oldItem.id == newItem.id
     }

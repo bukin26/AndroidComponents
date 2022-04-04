@@ -18,6 +18,6 @@ class MyPreferences(context: Context) {
     }
 
     fun getId(): Int {
-        return pref.getInt(Constants.PREF_KEY, -1)
+        return pref.getInt(Constants.PREF_KEY, Constants.ID_NO_ITEM)
     }
 }

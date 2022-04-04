@@ -12,16 +12,13 @@ import com.gmail.notifytask1.databinding.FragmentDetailsBinding
 import com.gmail.notifytask1.repository.ItemsRepository
 import com.gmail.notifytask1.utils.Constants
 import com.gmail.notifytask1.viewmodel.DetailsViewModel
-import com.gmail.notifytask1.viewmodel.MyViewModelFactory
+import com.gmail.notifytask1.viewmodel.DetailsViewModelFactory
 
 class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args: DetailsFragmentArgs by navArgs()
     private lateinit var viewModel: DetailsViewModel
-    private lateinit var viewModelFactory: MyViewModelFactory
-    private lateinit var repository: ItemsRepository
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,12 +31,11 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = ItemsRepository(MyPreferences(activity?.applicationContext!!))
-        viewModelFactory = MyViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).
-        get(DetailsViewModel::class.java)
         val id = savedInstanceState?.getInt(Constants.PREF_KEY) ?: args.id
-        viewModel.getItem(id)
+        val repository = ItemsRepository(MyPreferences(requireActivity().applicationContext))
+        val viewModelFactory = DetailsViewModelFactory(repository, id)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(DetailsViewModel::class.java)
         viewModel.item.observe(viewLifecycleOwner) {
             with(binding) {
                 itemId.text = it.id.toString()

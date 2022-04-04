@@ -20,9 +20,6 @@ class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private val adapter = ItemsAdapter { item -> adapterOnClick(item) }
     private lateinit var viewModel: ListViewModel
-    private lateinit var viewModelFactory: MyViewModelFactory
-    private lateinit var repository: ItemsRepository
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,18 +32,18 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = ItemsRepository(MyPreferences(activity?.applicationContext!!))
-        viewModelFactory = MyViewModelFactory(repository)
+        val repository = ItemsRepository(MyPreferences(requireActivity().applicationContext))
+        val viewModelFactory = MyViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ListViewModel::class.java)
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
         }
-        viewModel.getItemsList()
         viewModel.items.observe(viewLifecycleOwner) { newItems ->
             adapter.submitList(newItems)
         }
+        viewModel.getItemsList()
     }
 
     private fun adapterOnClick(item: Item) {
