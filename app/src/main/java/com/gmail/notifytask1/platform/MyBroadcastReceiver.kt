@@ -3,7 +3,7 @@ package com.gmail.notifytask1.platform
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.gmail.notifytask1.presentation.MainActivity
+import com.gmail.notifytask1.presentation.main.MainActivity
 
 class MyBroadcastReceiver : BroadcastReceiver() {
 

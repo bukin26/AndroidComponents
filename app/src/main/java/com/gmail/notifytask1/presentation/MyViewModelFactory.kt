@@ -1,8 +1,10 @@
-package com.gmail.notifytask1.viewmodel
+package com.gmail.notifytask1.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.gmail.notifytask1.presentation.list.ListViewModel
 import com.gmail.notifytask1.repository.ItemsRepository
+import com.gmail.notifytask1.presentation.main.MainViewModel
 
 @Suppress("UNCHECKED_CAST")
 class MyViewModelFactory(

@@ -1,4 +1,4 @@
-package com.gmail.notifytask1.presentation
+package com.gmail.notifytask1.presentation.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.data.MyPreferences
 import com.gmail.notifytask1.databinding.FragmentListBinding
+import com.gmail.notifytask1.presentation.ItemsAdapter
 import com.gmail.notifytask1.repository.ItemsRepository
-import com.gmail.notifytask1.viewmodel.ListViewModel
-import com.gmail.notifytask1.viewmodel.MyViewModelFactory
+import com.gmail.notifytask1.presentation.MyViewModelFactory
 
 class ListFragment : Fragment() {
 
@@ -34,7 +34,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val repository = ItemsRepository(MyPreferences(requireActivity().applicationContext))
         val viewModelFactory = MyViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory)
+        viewModel = ViewModelProvider(viewModelStore, viewModelFactory)
             .get(ListViewModel::class.java)
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)

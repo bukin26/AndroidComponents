@@ -1,4 +1,4 @@
-package com.gmail.notifytask1.viewmodel
+package com.gmail.notifytask1.presentation.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

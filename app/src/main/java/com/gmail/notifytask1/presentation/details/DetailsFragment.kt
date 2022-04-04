@@ -1,4 +1,4 @@
-package com.gmail.notifytask1.presentation
+package com.gmail.notifytask1.presentation.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import com.gmail.notifytask1.data.MyPreferences
 import com.gmail.notifytask1.databinding.FragmentDetailsBinding
 import com.gmail.notifytask1.repository.ItemsRepository
 import com.gmail.notifytask1.utils.Constants
-import com.gmail.notifytask1.viewmodel.DetailsViewModel
-import com.gmail.notifytask1.viewmodel.DetailsViewModelFactory
 
 class DetailsFragment : Fragment() {
 
@@ -34,7 +32,7 @@ class DetailsFragment : Fragment() {
         val id = savedInstanceState?.getInt(Constants.PREF_KEY) ?: args.id
         val repository = ItemsRepository(MyPreferences(requireActivity().applicationContext))
         val viewModelFactory = DetailsViewModelFactory(repository, id)
-        viewModel = ViewModelProvider(this, viewModelFactory)
+        viewModel = ViewModelProvider(viewModelStore, viewModelFactory)
             .get(DetailsViewModel::class.java)
         viewModel.item.observe(viewLifecycleOwner) {
             with(binding) {

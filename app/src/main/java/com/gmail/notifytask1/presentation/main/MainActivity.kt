@@ -1,4 +1,4 @@
-package com.gmail.notifytask1.presentation
+package com.gmail.notifytask1.presentation.main
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -14,8 +14,7 @@ import com.gmail.notifytask1.platform.MyBroadcastReceiver
 import com.gmail.notifytask1.platform.MyService
 import com.gmail.notifytask1.repository.ItemsRepository
 import com.gmail.notifytask1.utils.Constants
-import com.gmail.notifytask1.viewmodel.MainViewModel
-import com.gmail.notifytask1.viewmodel.MyViewModelFactory
+import com.gmail.notifytask1.presentation.MyViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
