@@ -1,4 +1,4 @@
-package com.gmail.notifytask1.presentation
+package com.gmail.notifytask1.presentation.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,24 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.data.MyPreferences
 import com.gmail.notifytask1.databinding.FragmentListBinding
-import com.gmail.notifytask1.mvi.MainIntent
-import com.gmail.notifytask1.mvi.MainState
-import com.gmail.notifytask1.viewmodel.ListViewModel
-import com.gmail.notifytask1.viewmodel.MyViewModelFactory
-import kotlinx.coroutines.launch
+import com.gmail.notifytask1.presentation.ItemsAdapter
 
 class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
     private val adapter = ItemsAdapter { item -> adapterOnClick(item) }
-    private lateinit var viewModel: ListViewModel
-    private lateinit var viewModelFactory: MyViewModelFactory
+    private val viewModel: ListViewModel by lazy {
+        val viewModelFactory =
+            ListViewModelFactory(MyPreferences(requireActivity().applicationContext))
+        ViewModelProvider(viewModelStore, viewModelFactory)
+            .get(ListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,23 +35,23 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModelFactory = MyViewModelFactory(MyPreferences(activity?.applicationContext!!))
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ListViewModel::class.java)
+        viewModel.state.observe(viewLifecycleOwner, ::renderState)
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
         }
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            if (state is MainState.Items) adapter.submitList(state.items)
-        }
+    }
+
+    private fun renderState(newState: ListState) {
+        adapter.submitList(newState.items)
     }
 
     private fun adapterOnClick(item: Item) {
-        lifecycleScope.launch {
-            viewModel.intents.send(MainIntent.SetId(item.id))
-        }
-        val direction = ListFragmentDirections.actionListFragmentToDetailsFragment(item.id)
+        viewModel.sendSetIdIntent(item.id)
+        val direction =
+            ListFragmentDirections.actionListFragmentToDetailsFragment(
+                item.id
+            )
         findNavController(this@ListFragment).navigate(direction)
     }
 }

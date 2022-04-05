@@ -13,7 +13,7 @@
         android:theme="@style/Theme.NotifyTask1">
         <service android:name=".platform.MyService" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
