@@ -1,23 +1,17 @@
 package com.gmail.notifytask1.presentation.details
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.gmail.notifytask1.data.ItemsHolder
+import com.gmail.notifytask1.base.BaseViewModel
+import com.gmail.notifytask1.base.Interactor
 
-class DetailsViewModel(id: Int) : ViewModel() {
+class DetailsViewModel(
+    interactors: Set<Interactor<DetailsState, DetailsAction>>,
+    id: Int
+) : BaseViewModel<DetailsState, DetailsAction>(
+    interactors = interactors,
+    reducer = DetailsReducer(id)
+) {
 
-    private val _state = MutableLiveData<DetailsState>()
-    val state: LiveData<DetailsState>
-        get() = _state
-
-    init {
-        getItem(id)
-    }
-
-    private fun getItem(id: Int) {
-        ItemsHolder.getItemById(id)?.let {
-            _state.value = DetailsState(item = it)
-        }
+    fun loadItem() {
+        action(DetailsAction.Load)
     }
 }

@@ -10,6 +10,8 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.notifytask1.data.Item
 import com.gmail.notifytask1.data.MyPreferences
+import com.gmail.notifytask1.data.interactor.GetItemsInteractor
+import com.gmail.notifytask1.data.interactor.SetIdInteractor
 import com.gmail.notifytask1.databinding.FragmentListBinding
 import com.gmail.notifytask1.presentation.ItemsAdapter
 
@@ -18,8 +20,12 @@ class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private val adapter = ItemsAdapter { item -> adapterOnClick(item) }
     private val viewModel: ListViewModel by lazy {
+        val interactors = setOf(
+            GetItemsInteractor(),
+            SetIdInteractor(MyPreferences(requireActivity().applicationContext))
+        )
         val viewModelFactory =
-            ListViewModelFactory(MyPreferences(requireActivity().applicationContext))
+            ListViewModelFactory(interactors)
         ViewModelProvider(viewModelStore, viewModelFactory)
             .get(ListViewModel::class.java)
     }
@@ -36,6 +42,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state.observe(viewLifecycleOwner, ::renderState)
+        viewModel.loadItems()
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
@@ -47,7 +54,7 @@ class ListFragment : Fragment() {
     }
 
     private fun adapterOnClick(item: Item) {
-        viewModel.sendSetIdIntent(item.id)
+        viewModel.setId(item.id)
         val direction =
             ListFragmentDirections.actionListFragmentToDetailsFragment(
                 item.id

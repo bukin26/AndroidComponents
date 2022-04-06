@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.gmail.notifytask1.R
 import com.gmail.notifytask1.data.MyPreferences
+import com.gmail.notifytask1.data.interactor.GetIdInteractor
 import com.gmail.notifytask1.platform.MyBroadcastReceiver
 import com.gmail.notifytask1.platform.MyService
 import com.gmail.notifytask1.utils.Constants
@@ -17,7 +18,10 @@ import com.gmail.notifytask1.utils.Constants
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by lazy {
-        val viewModelFactory = MainViewModelFactory(MyPreferences(applicationContext))
+        val interactors = setOf(
+            GetIdInteractor(MyPreferences(applicationContext))
+        )
+        val viewModelFactory = MainViewModelFactory(interactors)
         ViewModelProvider(this, viewModelFactory)
             .get(MainViewModel::class.java)
     }
@@ -36,19 +40,21 @@ class MainActivity : AppCompatActivity() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(Constants.MY_BROADCAST)
         registerReceiver(myBroadcastReceiver, intentFilter)
+        viewModel.state.observe(this, ::renderState)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        viewModel.state.observe(this, ::renderState)
-        viewModel.sendGetIdIntent()
+        viewModel.getId()
     }
 
     private fun renderState(newState: MainState) {
-        val bundle = bundleOf(Constants.PREF_KEY to newState.id)
-        findNavController(R.id.nav_host_fragment_container).navigate(
-            R.id.detailsFragment,
-            bundle
-        )
+        if (newState.id != Constants.ID_NO_ITEM) {
+            val bundle = bundleOf(Constants.PREF_KEY to newState.id)
+            findNavController(R.id.nav_host_fragment_container).navigate(
+                R.id.detailsFragment,
+                bundle
+            )
+        }
     }
 }

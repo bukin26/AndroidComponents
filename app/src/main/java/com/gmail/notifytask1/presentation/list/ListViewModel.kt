@@ -1,42 +1,21 @@
 package com.gmail.notifytask1.presentation.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.gmail.notifytask1.data.ItemsHolder
-import com.gmail.notifytask1.data.MyPreferences
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
+import com.gmail.notifytask1.base.BaseViewModel
+import com.gmail.notifytask1.base.Interactor
 
-class ListViewModel(private val preferences: MyPreferences) : ViewModel() {
+class ListViewModel(
+    interactors: Set<Interactor<ListState, ListAction>>
+) : BaseViewModel<ListState, ListAction>(
+    interactors = interactors,
+    reducer = ListReducer()
+) {
 
-    private val intents: Channel<ListIntent> = Channel(Channel.UNLIMITED)
-    private val _state = MutableLiveData(ListState(items = ItemsHolder.items))
-    val state: LiveData<ListState>
-        get() = _state
-
-    init {
-        handleIntent()
+    fun loadItems() {
+        action(ListAction.LoadItems)
     }
 
-    private fun handleIntent() {
-        viewModelScope.launch {
-            intents.consumeAsFlow().collect() { intent ->
-                if (intent is ListIntent.SetId) setId(intent.id)
-            }
-        }
+    fun setId(id: Int) {
+        action(ListAction.SetId(id))
     }
 
-    fun sendSetIdIntent(id: Int) {
-        viewModelScope.launch {
-            intents.send(ListIntent.SetId(id))
-        }
-    }
-
-    private fun setId(id: Int) {
-        preferences.setId(id)
-    }
 }
